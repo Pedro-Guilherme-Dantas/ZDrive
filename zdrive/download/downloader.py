@@ -96,8 +96,9 @@ class Downloader(DriveAPI):
                             " \t Downloading fileId: {0}, {1}% complete!".format(fileId, int(status.progress() * 100)))
                         current_progress = progress
             print("Download Complete!")
+            return "sucess"
         except Exception as e:
             print(str(e))
-            return
+            return "error"
         finally:
             fh.close()
