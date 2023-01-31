@@ -8,7 +8,7 @@ import os.path
 from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
-
+from google.oauth2.service_account import Credentials
 
 class DriveAPI:
     global SCOPES
@@ -38,21 +38,7 @@ class DriveAPI:
 
         # If no valid credentials are available,
         # request the user to log in.
-        if not self.creds or not self.creds.valid:
-
-            # If token is expired, it will be refreshed,
-            # else, we will request a new one.
-            if self.creds and self.creds.expired and self.creds.refresh_token:
-                self.creds.refresh(Request())
-            else:
-                flow = InstalledAppFlow.from_client_secrets_file(
-                    "credentials.json", SCOPES)
-                self.creds = flow.run_local_server(port=0)
-
-            # Save the access token in token.pickle
-            # file for future usage
-            with open('token.pickle', 'wb') as token:
-                pickle.dump(self.creds, token)
+        self.creds = Credentials.from_service_account_file(filename="gitlab-1280-6f1fad5cb8ab.json")
 
         # Connect to the API service
         self.service = build('drive', 'v3', credentials=self.creds)
